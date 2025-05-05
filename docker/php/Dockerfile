@@ -33,7 +33,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
 RUN docker-php-ext-install -j$(nproc) \
     intl \
     zip \
-    pdo_pgsql \
+    pdo \
+    pdo_mysql \
     mbstring \
     bcmath \
     exif \
@@ -43,17 +44,8 @@ RUN docker-php-ext-install -j$(nproc) \
     gmp \
     pcntl
 
-# Установим Redis и Memcached через PECL
-RUN pecl install redis && docker-php-ext-enable redis
-
 # Установим Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Установим Yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && apt-get update && apt-get install -y --no-install-recommends yarn \
-    && rm -rf /var/lib/apt/lists/*
 
 # Установим рабочую директорию
 WORKDIR /var/www

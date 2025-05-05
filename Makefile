@@ -42,9 +42,9 @@ down:
 up:
 	docker rm -f $$(docker ps -a | grep test | awk '{print $$1}') || echo
 	cd $(APP_DIR) && docker-compose up -d --remove-orphans --force-recreate
-	cd $(APP_DIR) && $(DC) docker-compose exec -T php /bin/bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-ansi --no-scripts --no-interaction --no-progress"
-	cd $(APP_DIR) && $(DC) docker-compose exec -u root -T php bash -c "mkdir -p storage/logs && chown -R www-data:www-data storage/logs"
-	cd $(APP_DIR) && $(DC) docker-compose exec -T php /bin/bash -c "php artisan key:generate"
+	cd $(APP_DIR) && docker-compose exec -T php /bin/bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-ansi --no-scripts --no-interaction --no-progress"
+	cd $(APP_DIR) && docker-compose exec -u root -T php bash -c "mkdir -p storage/logs && chown -R www-data:www-data storage/logs"
+	cd $(APP_DIR) && docker-compose exec -T php /bin/bash -c "php artisan key:generate"
 	@echo ---------------------------------------------
 	@echo =============================================
 	@echo == Done
@@ -67,7 +67,7 @@ build:
 
 first_install:
 	cp ./app/.env.example ./app/.env
-	docker network create guare-network || echo Created
+	docker network create test-network || echo Created
 	$(MAKE) build -
 	$(MAKE) up
 
