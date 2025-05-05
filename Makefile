@@ -67,7 +67,7 @@ build:
 
 first_install:
 	cp ./app/.env.example ./app/.env
-	docker network create guare-network || echo Created
+	docker network create test-network || echo Created
 	$(MAKE) build -
 	$(MAKE) up
 
