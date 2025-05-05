@@ -14,14 +14,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Stock extends Model
 {
+    /** @use HasFactory<StockFactory> */
     use HasFactory;
 
-    /** @use HasFactory<StockFactory> */
     protected $fillable = [
         'product_id',
         'stock',
         'warehouse_id',
     ];
+
+    public $timestamps = false;
 
     public function product(): BelongsTo
     {
