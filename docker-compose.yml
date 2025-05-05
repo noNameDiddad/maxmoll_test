@@ -45,29 +45,19 @@ services:
     networks:
       - test-network
 
-  redis:
-    build:
-      context: ./docker/redis
-    container_name: test-redis
+  database:
+    image: mysql:latest
+    container_name: test-db
     restart: unless-stopped
-    volumes:
-      - redis_data:/data:rw
+    tty: true
     ports:
-      - "127.0.0.1:6379:6379"
-    networks:
-      - test-network
-
-  postgres:
-    image: postgres:15-alpine
-    container_name: test-postgres
-    restart: unless-stopped
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:3306:3306"
     environment:
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
     networks:
       - test-network
