@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('customer', 255);
             $table->foreignId('warehouse_id')->constrained()->cascadeOnDelete();
             $table->string('status', 255)->default(OrderStatuses::ACTIVE);
-            $table->timestamp('completed_at');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
